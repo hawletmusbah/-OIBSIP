@@ -1,0 +1,127 @@
+## basic scan
+─$ nmap 192.168.56.1   
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-15 03:01 -0400
+Nmap scan report for 192.168.56.1
+Host is up (0.0083s latency).
+Not shown: 995 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5432/tcp open  postgresql
+6129/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 11.10 seconds
+
+
+## service version scan
+└─$ nmap -sV 192.168.56.1 
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-15 03:02 -0400
+Nmap scan report for 192.168.56.1
+Host is up (0.0019s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT     STATE SERVICE       VERSION
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+5432/tcp open  postgresql    PostgreSQL DB
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 16.24 seconds
+
+
+
+
+## OS detection scan
+└─$ nmap -O 192.168.56.1   
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-14 23:54 -0400
+Nmap scan report for 192.168.56.1
+Host is up (0.00082s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT     STATE SERVICE
+135/tcp  open  msrpc
+139/tcp  open  netbios-ssn
+445/tcp  open  microsoft-ds
+5432/tcp open  postgresql
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: VoIP adapter|bridge|general purpose
+Running (JUST GUESSING): AT&T embedded (93%), Oracle Virtualbox (92%), Slirp (92%), QEMU (90%)
+OS CPE: cpe:/o:oracle:virtualbox cpe:/a:danny_gasparovski:slirp cpe:/a:qemu:qemu
+Aggressive OS guesses: AT&T BGW210 voice gateway (93%), Oracle Virtualbox Slirp NAT bridge (92%), QEMU user mode network gateway (90%)
+No exact OS matches for host (test conditions non-ideal).
+
+OS detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 10.69 seconds
+
+
+
+└─$ nmap -A 192.168.56.1                                        
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-10-15 02:36 -0400
+Nmap scan report for 192.168.56.1
+Host is up (0.00056s latency).
+Not shown: 996 filtered tcp ports (no-response)
+PORT     STATE SERVICE       VERSION
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open  microsoft-ds?
+5432/tcp open  postgresql    PostgreSQL DB
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: VoIP adapter|bridge|general purpose
+Running (JUST GUESSING): AT&T embedded (93%), Oracle Virtualbox (92%), Slirp (92%), QEMU (90%)
+OS CPE: cpe:/o:oracle:virtualbox cpe:/a:danny_gasparovski:slirp cpe:/a:qemu:qemu
+Aggressive OS guesses: AT&T BGW210 voice gateway (93%), Oracle Virtualbox Slirp NAT bridge (92%), QEMU user mode network gateway (90%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2026-10-15T06:37:14
+|_  start_date: N/A
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT     ADDRESS
+1   0.15 ms 192.168.56.1
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 31.26 seconds
+
+ 
+## we have 5 open ports I got diffrent services
+ msrpc  on port 135/tcp
+ netbios-ssn  on port 139/tcp
+ microsoft-ds on port 445/tcp
+ postgresql  on 5432 /tcp
+ unknown on port 6129/tcp
+
+
+
+
+
+1. Port 135/tcp (MSRPC)
+What it does: Microsoft Remote Procedure Call (MSRPC) allows Windows programs and services to communicate with each other across a network.
+Security risk: If improperly configured or vulnerable, it may expose Windows services to unauthorized access or remote attacks.
+Risk level: Medium to High.
+
+2. Port 139/tcp (NetBIOS-SSN)
+What it does: NetBIOS Session Service supports communication between computers, especially for older Windows file-sharing and network services.
+Security risk: Attackers may discover network information or access shared resources if permissions are weak or misconfigured.
+Risk level: Medium to High.
+
+3. Port 445/tcp(Microsoft-DS (SMB))
+What it does: Server Message Block (SMB) allows Windows computers to share files, printers, and other network resources.
+Security risk: Vulnerable SMB versions or weak access controls can allow unauthorized file access or remote exploitation.
+Risk level: High if exposed and vulnerable.
+
+4. Port 5432/tcp(PostgreSQL)
+What it does: PostgreSQL is a relational database management system that stores, organizes, and retrieves data for applications.
+Security risk: If authentication is weak or access is not properly restricted, unauthorized users may access, modify, or steal sensitive database information.
+Risk level: Medium to High.
+
+5. Port 6129/tcp — Unknown Service
+What it does: Nmap reports port 6129 as open, but it cannot identify the service running on that port. The port may be used by a particular application or a custom service.
+Security risk: An unknown service may expose a security risk if it is unnecessary, outdated, or improperly configured. However, an unknown service is not automatically dangerous.
